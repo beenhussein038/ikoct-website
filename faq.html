@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequently Asked Questions | Ikara Orphanage Charity Trust</title>
+    <meta name="description"
+        content="Find answers to common questions about donations, volunteering, sponsorship and programs at IOCT.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+    <div id="preloader">
+        <div class="preloader-content">
+            <img src="images/logo.png" alt="The IOCT golden scale emblem" id="scale-image">
+            <h2>IIKARA ORPHANAGE CHARITY TRUST</h2>
+            <p>Assisting the orphans is a trade without loss</p>
+            <div id="loading-percent">0%</div>
+        </div>
+    </div>
+    <div id="progress-bar"></div>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo"><img src="images/logo.png" alt="IKOCT logo"><span>IKOCT</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li class="has-dropdown">
+                    <a href="#">About</a>
+                    <div class="dropdown">
+                        <a href="about.html">about</a>
+                        <a href="MV.html#mission">Mission and Vision</a>
+                        <a href="MV.html#objectives">objectives</a>
+                    </div>
+                </li>
+                <li><a href="programs.html">Programs</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li class="has-dropdown">
+                    <a href="#">Get Involved</a>
+                    <div class="dropdown">
+                        <a href="stories.html">Success Stories</a>
+                        <a href="gallery.html">Gallery</a>
+                        <a href="events.html">Events</a>
+                        <a href="team.html">Our Team</a>
+                        <a href="volunteer.html">Volunteer</a>
+                        <a href="sponsor.html">Sponsor A Child</a>
+                        <a href="blog.html">Blog</a>
+                        <a href="faq.html">FAQ</a>
+                    </div>
+                </li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <a href="donate.html" class="btn btn-primary btn-sm">Donate Now</a>
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu"><i
+                        class="fas fa-bars"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" style="min-height:60vh;padding-top:150px;">
+        <div class="container">
+            <span class="hero-badge">FAQ</span>
+            <h1>Frequently Asked Questions</h1>
+            <p class="lede">Find quick answers about donations, sponsorships, volunteering and our programs.</p>
+        </div>
+    </section>
+
+    <section class="about-preview">
+        <div class="container">
+            <div class="search-box">
+                <input type="text" id="faqSearch" placeholder="Search questions...">
+                <button aria-label="Search"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <section class="programs">
+        <div class="container">
+            <div class="gallery-filters">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Donations</button>
+                <button class="filter-btn">Sponsorship</button>
+                <button class="filter-btn">Volunteering</button>
+                <button class="filter-btn">Programs</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="impact">
+        <div class="container" style="max-width:800px">
+            <div class="section-head"><span class="eyebrow">Donations</span>
+                <h2 class="section-title">Donation Questions</h2>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">How can I donate?</button>
+                <div class="faq-answer">
+                    <p>You can donate through bank transfer, online payment gateways or fundraising campaigns.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">Is my donation secure?</button>
+                <div class="faq-answer">
+                    <p>Yes. All donation transactions are processed through secure payment systems.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="programs">
+        <div class="container" style="max-width:800px">
+            <div class="section-head"><span class="eyebrow">Sponsorship</span>
+                <h2 class="section-title">Sponsorship Questions</h2>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">What does child sponsorship cover?</button>
+                <div class="faq-answer">
+                    <p>Education, healthcare, nutrition and welfare support.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">Can I receive updates?</button>
+                <div class="faq-answer">
+                    <p>Yes. Sponsors receive regular reports and updates.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-preview" style="background:var(--sand-2)">
+        <div class="container" style="max-width:800px;text-align:left">
+            <div class="section-head left"><span class="eyebrow">Volunteering</span>
+                <h2 class="section-title">Volunteer Questions</h2>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">Do I need experience?</button>
+                <div class="faq-answer">
+                    <p>No. Training and guidance are provided where necessary.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">Can I volunteer remotely?</button>
+                <div class="faq-answer">
+                    <p>Some volunteer roles can be completed remotely.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="impact">
+        <div class="container" style="max-width:800px">
+            <div class="section-head"><span class="eyebrow">Programs</span>
+                <h2 class="section-title">Program Questions</h2>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">Which communities do you serve?</button>
+                <div class="faq-answer">
+                    <p>We support vulnerable children and communities across Nigeria.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">How are beneficiaries selected?</button>
+                <div class="faq-answer">
+                    <p>Through assessments, referrals and community engagement.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="programs">
+        <div class="container" style="text-align:center;display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+            <button class="btn btn-primary" id="expandAll">Expand All</button>
+            <button class="btn btn-outline" style="border-color:var(--line);color:var(--ink)" id="collapseAll">Collapse
+                All</button>
+        </div>
+    </section>
+
+    <section class="about-preview">
+        <div class="container">
+            <h2 class="section-title">Still Need Help?</h2>
+            <p>Our support team is available to answer your questions.</p>
+            <a href="contact.html" class="btn btn-dark">Contact Support</a>
+        </div>
+    </section>
+
+    <section class="impact">
+        <div class="container">
+            <div class="section-head"><span class="eyebrow">Quick links</span>
+                <h2 class="section-title">Quick Links</h2>
+            </div>
+            <div class="program-grid">
+                <div class="program-card" style="text-align:center"><a href="donate.html"
+                        style="font-weight:700;color:var(--sand)">Donate Now</a></div>
+                <div class="program-card" style="text-align:center"><a href="volunteer.html"
+                        style="font-weight:700;color:var(--sand)">Become A Volunteer</a></div>
+                <div class="program-card" style="text-align:center"><a href="sponsor.html"
+                        style="font-weight:700;color:var(--sand)">Sponsor A Child</a></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="sponsor-child">
+        <div class="container">
+            <h2>Together We Can Make A Difference</h2>
+            <p>Join our mission and help transform lives.</p>
+            <a href="donate.html" class="btn btn-primary">Donate Today</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Ikara Orphanage Charity Trust</h3>
+                    <p>Answers. Support. Impact.</p>
+                    <div class="socials">
+                        <a href="https://facebook.com/profile.php?id=61587682960370" aria-label="Facebook"><i
+                                class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="X"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h5>Explore</h5>
+                    <ul>
+                       <li><a href="about.html">about us</a></li>
+                        <li><a href="programs.html">Programs</a></li>
+                        <li><a href="stories.html">Success Stories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Get Involved</h5>
+                    <ul>
+                        <li><a href="volunteer.html">Volunteer</a></li>
+                        <li><a href="sponsor.html">Sponsor A Child</a></li>
+                        <li><a href="donate.html">Donate</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Contact</h5>
+                    <p>Ikara, Kaduna State</p>
+                    <p>Orphanagecharityikara@gmail.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© <span class="year">2026</span> IOCT. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/2348038883528" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp"><i
+            class="fab fa-whatsapp"></i></a>
+    <a href="donate.html" class="btn btn-primary floating-donate btn-sm">Donate</a>
+    <script src="script.js"></script>
+</body>
+
+</html>
