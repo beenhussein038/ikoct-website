@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 90">
-  <g fill="#5C6472">
-    <circle cx="34" cy="45" r="20"/>
-    <path d="M34 30 a15 15 0 0 1 0 30 a15 15 0 0 1 0 -30" fill="#EDEDED"/>
-  </g>
-  <text x="66" y="40" font-family="Georgia, serif" font-size="14" fill="#5C6472">Partner</text>
-  <text x="66" y="60" font-family="Georgia, serif" font-size="14" fill="#5C6472">Organization</text>
-</svg>

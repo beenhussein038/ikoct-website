@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 90">
-  <g fill="none" stroke="#5C6472" stroke-width="2">
-    <rect x="16" y="24" width="36" height="36" rx="6" fill="#EDEDED"/>
-    <path d="M22 42 l8 8 16 -16" stroke="#5C6472" stroke-width="3" fill="none"/>
-  </g>
-  <text x="66" y="40" font-family="Georgia, serif" font-size="14" fill="#5C6472">Supporting</text>
-  <text x="66" y="60" font-family="Georgia, serif" font-size="14" fill="#5C6472">Organization</text>
-</svg>
