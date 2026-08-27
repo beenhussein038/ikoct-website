@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="eventSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#14213A"/>
+      <stop offset="45%" stop-color="#3B2E52"/>
+      <stop offset="75%" stop-color="#9A5A3A"/>
+      <stop offset="100%" stop-color="#D9A441"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#eventSky)"/>
+  <g opacity="0.9">
+    <rect x="620" y="360" width="360" height="280" rx="14" fill="#F7E6B0" opacity="0.12"/>
+    <rect x="620" y="360" width="360" height="60" rx="14" fill="#D9A441" opacity="0.35"/>
+    <circle cx="700" cy="330" r="14" fill="#F2D68A"/>
+    <circle cx="900" cy="330" r="14" fill="#F2D68A"/>
+    <line x1="660" y1="450" x2="940" y2="450" stroke="#F7E6B0" stroke-width="4" opacity="0.4"/>
+    <line x1="660" y1="500" x2="940" y2="500" stroke="#F7E6B0" stroke-width="4" opacity="0.3"/>
+    <line x1="660" y1="550" x2="860" y2="550" stroke="#F7E6B0" stroke-width="4" opacity="0.3"/>
+  </g>
+  <text x="800" y="760" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="#F7E6B0" opacity="0.85">IKOCT Event</text>
+</svg>

@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#14213A"/>
+      <stop offset="45%" stop-color="#3B2E52"/>
+      <stop offset="75%" stop-color="#9A5A3A"/>
+      <stop offset="100%" stop-color="#D9A441"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#F7E6B0"/>
+      <stop offset="55%" stop-color="#F2D68A"/>
+      <stop offset="100%" stop-color="#D9A441" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="groundFar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7A4A33"/>
+      <stop offset="100%" stop-color="#5C3524"/>
+    </linearGradient>
+    <linearGradient id="groundNear" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#20304F"/>
+      <stop offset="100%" stop-color="#14213A"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+
+  <!-- sun -->
+  <circle cx="1180" cy="430" r="230" fill="url(#sun)"/>
+  <circle cx="1180" cy="430" r="95" fill="#F7E6B0" opacity=".9"/>
+
+  <!-- soft adire dot pattern overlay -->
+  <g opacity=".12" fill="#F2D68A">
+    <circle cx="120" cy="120" r="3"/><circle cx="200" cy="180" r="3"/><circle cx="60" cy="260" r="3"/>
+    <circle cx="1400" cy="140" r="3"/><circle cx="1480" cy="220" r="3"/><circle cx="1340" cy="90" r="3"/>
+    <circle cx="800" cy="80" r="3"/><circle cx="900" cy="150" r="3"/><circle cx="700" cy="60" r="3"/>
+    <circle cx="300" cy="90" r="3"/><circle cx="1050" cy="200" r="3"/><circle cx="1550" cy="320" r="3"/>
+  </g>
+
+  <!-- distant hills -->
+  <path d="M0 620 Q 200 560 420 610 T 860 600 T 1280 615 T 1600 590 V1000 H0 Z" fill="url(#groundFar)" opacity=".9"/>
+
+  <!-- acacia tree silhouette, left -->
+  <g fill="#14213A">
+    <rect x="222" y="560" width="14" height="130" rx="4"/>
+    <ellipse cx="180" cy="545" rx="130" ry="34"/>
+    <ellipse cx="270" cy="520" rx="90" ry="26"/>
+    <ellipse cx="120" cy="560" rx="70" ry="22"/>
+  </g>
+
+  <!-- acacia tree silhouette, right -->
+  <g fill="#14213A" opacity=".85">
+    <rect x="1360" y="600" width="10" height="90" rx="3"/>
+    <ellipse cx="1332" cy="588" rx="90" ry="24"/>
+    <ellipse cx="1400" cy="572" rx="60" ry="18"/>
+  </g>
+
+  <!-- near ground -->
+  <path d="M0 760 Q 260 700 540 750 T 1080 735 T 1600 760 V1000 H0 Z" fill="url(#groundNear)"/>
+
+  <!-- children silhouettes holding hands, foreground -->
+  <g fill="#0B1526">
+    <!-- child 1 -->
+    <circle cx="640" cy="760" r="20"/>
+    <path d="M622 782 q18 -14 36 0 l4 70 h-44 z"/>
+    <!-- child 2 (taller, center) -->
+    <circle cx="710" cy="742" r="23"/>
+    <path d="M689 767 q21 -16 42 0 l6 92 h-54 z"/>
+    <!-- child 3 -->
+    <circle cx="790" cy="760" r="20"/>
+    <path d="M772 782 q18 -14 36 0 l4 70 h-44 z"/>
+    <!-- linking arms -->
+    <path d="M660 800 q20 14 30 0" stroke="#0B1526" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M748 800 q20 14 30 0" stroke="#0B1526" stroke-width="8" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- birds -->
+  <g stroke="#F2D68A" stroke-width="4" fill="none" opacity=".7" stroke-linecap="round">
+    <path d="M980 220 q14 -16 28 0 q14 -16 28 0"/>
+    <path d="M1040 260 q10 -12 20 0 q10 -12 20 0"/>
+  </g>
+</svg>

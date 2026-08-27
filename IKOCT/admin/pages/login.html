@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin Login — IKOCT</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="../styles/admin.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="card login-card">
+      <h1>IKOCT</h1>
+      <p class="sub">Admin Dashboard Login</p>
+      <div id="loginAlert"></div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;" id="loginBtn">Log In</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="../scripts/api.js"></script>
+  <script>
+    // If already logged in, skip straight to the dashboard.
+    if (IkoctAPI.getToken()) location.href = 'dashboard.html';
+
+    const form = document.getElementById('loginForm');
+    const alertBox = document.getElementById('loginAlert');
+    const btn = document.getElementById('loginBtn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertBox.innerHTML = '';
+      btn.disabled = true;
+      btn.textContent = 'Logging in…';
+      try {
+        const { data } = await IkoctAPI.login(
+          document.getElementById('email').value.trim(),
+          document.getElementById('password').value
+        );
+        IkoctAPI.setToken(data.token);
+        localStorage.setItem('ikoct_admin_profile', JSON.stringify(data.admin));
+        location.href = 'dashboard.html';
+      } catch (err) {
+        alertBox.innerHTML = `<div class="alert alert-error">${err.message}</div>`;
+        btn.disabled = false;
+        btn.textContent = 'Log In';
+      }
+    });
+  </script>
+</body>
+</html>

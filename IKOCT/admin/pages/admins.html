@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin Users — IKOCT Admin</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="../styles/admin.css" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="admin-shell">
+  <nav class="admin-sidebar" id="adminSidebar"></nav>
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h2>Admin Users</h2>
+      <button class="btn btn-primary" id="addBtn">+ Add Admin</button>
+    </div>
+    <div id="alertBox"></div>
+    <div class="card"><div id="wrap"><p class="empty-state">Loading…</p></div></div>
+  </main>
+</div>
+
+<div class="modal-backdrop hidden" id="modalBackdrop">
+  <div class="modal">
+    <h3>Add Admin</h3>
+    <div id="modalAlert"></div>
+    <form id="addForm">
+      <div class="form-group"><label>Full Name</label><input id="n_name" required /></div>
+      <div class="form-group"><label>Email</label><input type="email" id="n_email" required /></div>
+      <div class="form-group"><label>Temporary Password (min 10 characters)</label><input type="password" id="n_password" minlength="10" required /></div>
+      <div class="form-group">
+        <label>Role</label>
+        <select id="n_role"><option value="editor">Editor</option><option value="super_admin">Super Admin</option></select>
+      </div>
+    </form>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+      <button type="submit" form="addForm" class="btn btn-primary" id="saveBtn">Create</button>
+    </div>
+  </div>
+</div>
+
+<script src="../scripts/api.js"></script>
+<script src="../scripts/auth-guard.js"></script>
+<script src="../scripts/shell.js"></script>
+<script>
+  renderAdminShell('admins');
+  const base = window.IKOCT_API_BASE_URL || 'http://localhost:4000/api';
+
+  function showAlert(msg, type = 'error') {
+    document.getElementById('alertBox').innerHTML = `<div class="alert alert-${type === 'error' ? 'error' : 'success'}">${msg}</div>`;
+    setTimeout(() => (document.getElementById('alertBox').innerHTML = ''), 4000);
+  }
+
+  async function load() {
+    const wrap = document.getElementById('wrap');
+    try {
+      const res = await fetch(`${base}/auth/admins`, { headers: { Authorization: `Bearer ${IkoctAPI.getToken()}` } });
+      const { data } = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to load admins (super admin access required).');
+      wrap.innerHTML = `<table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th></th></tr></thead><tbody>
+        ${data.map((a) => `<tr>
+          <td>${a.name}</td><td>${a.email}</td><td>${a.role}</td>
+          <td>${a.is_active ? '<span class="badge badge-active">Active</span>' : '<span class="badge badge-inactive">Disabled</span>'}</td>
+          <td><button class="btn btn-secondary" style="padding:5px 10px;font-size:0.8rem;" data-toggle="${a.id}" data-active="${a.is_active}">${a.is_active ? 'Disable' : 'Enable'}</button></td>
+        </tr>`).join('')}
+      </tbody></table>`;
+
+      wrap.querySelectorAll('[data-toggle]').forEach((btn) =>
+        btn.addEventListener('click', async () => {
+          const newActive = btn.dataset.active === '1' || btn.dataset.active === 'true' ? false : true;
+          await fetch(`${base}/auth/admins/${btn.dataset.toggle}/active`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${IkoctAPI.getToken()}` },
+            body: JSON.stringify({ is_active: newActive }),
+          });
+          load();
+        })
+      );
+    } catch (err) {
+      wrap.innerHTML = `<div class="alert alert-error">${err.message}</div>`;
+    }
+  }
+
+  document.getElementById('addBtn').addEventListener('click', () => document.getElementById('modalBackdrop').classList.remove('hidden'));
+  document.getElementById('cancelBtn').addEventListener('click', () => document.getElementById('modalBackdrop').classList.add('hidden'));
+
+  document.getElementById('addForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('saveBtn');
+    btn.disabled = true;
+    try {
+      const res = await fetch(`${base}/auth/admins`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${IkoctAPI.getToken()}` },
+        body: JSON.stringify({
+          name: document.getElementById('n_name').value,
+          email: document.getElementById('n_email').value,
+          password: document.getElementById('n_password').value,
+          role: document.getElementById('n_role').value,
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Failed to create admin.');
+      document.getElementById('modalBackdrop').classList.add('hidden');
+      showAlert('Admin created.', 'success');
+      load();
+    } catch (err) {
+      document.getElementById('modalAlert').innerHTML = `<div class="alert alert-error">${err.message}</div>`;
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  load();
+</script>
+</body>
+</html>
