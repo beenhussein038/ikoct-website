@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title id="pageTitle">Manage — IKOCT Admin</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="../styles/admin.css" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="admin-shell">
+  <nav class="admin-sidebar" id="adminSidebar"></nav>
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <h2 id="heading">Manage</h2>
+      <button class="btn btn-primary" id="addBtn">+ Add New</button>
+    </div>
+    <div id="alertBox"></div>
+    <div class="card">
+      <div id="tableWrap"><p class="empty-state">Loading…</p></div>
+    </div>
+  </main>
+</div>
+
+<div class="modal-backdrop hidden" id="modalBackdrop">
+  <div class="modal">
+    <h3 id="modalTitle">Add</h3>
+    <div id="modalAlert"></div>
+    <form id="itemForm"></form>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+      <button type="submit" form="itemForm" class="btn btn-primary" id="saveBtn">Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="../scripts/api.js"></script>
+<script src="../scripts/auth-guard.js"></script>
+<script src="../scripts/shell.js"></script>
+<script src="../scripts/resourceConfig.js"></script>
+<script>
+  const params = new URLSearchParams(location.search);
+  const resource = params.get('resource');
+  const config = RESOURCE_CONFIG[resource];
+
+  if (!config) {
+    document.body.innerHTML = '<p style="padding:40px;">Unknown resource. <a href="dashboard.html">Back to dashboard</a></p>';
+    throw new Error('Unknown resource: ' + resource);
+  }
+
+  renderAdminShell(resource);
+  document.getElementById('pageTitle').textContent = `${config.label} — IKOCT Admin`;
+  document.getElementById('heading').textContent = config.label;
+
+  let editingId = null;
+
+  function showAlert(msg, type = 'error') {
+    document.getElementById('alertBox').innerHTML = `<div class="alert alert-${type === 'error' ? 'error' : 'success'}">${msg}</div>`;
+    setTimeout(() => (document.getElementById('alertBox').innerHTML = ''), 4000);
+  }
+
+  function formatCell(row, col) {
+    const val = row[col];
+    if (col === 'is_active' || col === 'is_published') {
+      return val
+        ? '<span class="badge badge-active">Yes</span>'
+        : '<span class="badge badge-inactive">No</span>';
+    }
+    if (val === null || val === undefined || val === '') return '<span style="color:#999;">—</span>';
+    if (typeof val === 'string' && val.length > 60) return val.slice(0, 60) + '…';
+    return val;
+  }
+
+  async function loadTable() {
+    const wrap = document.getElementById('tableWrap');
+    try {
+      const { data } = await IkoctAPI.list(resource);
+      if (data.length === 0) {
+        wrap.innerHTML = `<div class="empty-state">No ${config.label.toLowerCase()} yet. Click "+ Add New" to create the first one.</div>`;
+        return;
+      }
+      const headerCells = config.columns.map((c) => `<th>${c.replace(/_/g, ' ')}</th>`).join('');
+      const rows = data
+        .map((row) => {
+          const cells = config.columns.map((c) => `<td>${formatCell(row, c)}</td>`).join('');
+          return `<tr>
+            ${cells}
+            <td style="white-space:nowrap;">
+              <button class="btn btn-secondary" style="padding:5px 10px;font-size:0.8rem;" data-edit="${row.id}">Edit</button>
+              <button class="btn btn-danger" style="padding:5px 10px;font-size:0.8rem;" data-delete="${row.id}">Delete</button>
+            </td>
+          </tr>`;
+        })
+        .join('');
+      wrap.innerHTML = `<table><thead><tr>${headerCells}<th></th></tr></thead><tbody>${rows}</tbody></table>`;
+
+      wrap.querySelectorAll('[data-edit]').forEach((btn) =>
+        btn.addEventListener('click', () => openModal(data.find((r) => r.id == btn.dataset.edit)))
+      );
+      wrap.querySelectorAll('[data-delete]').forEach((btn) =>
+        btn.addEventListener('click', () => deleteItem(btn.dataset.delete))
+      );
+    } catch (err) {
+      wrap.innerHTML = `<div class="alert alert-error">${err.message}</div>`;
+    }
+  }
+
+  function fieldHtml(field, value) {
+    const val = value ?? field.default ?? '';
+    if (field.type === 'textarea') {
+      return `<textarea id="f_${field.name}" ${field.required ? 'required' : ''}>${val}</textarea>`;
+    }
+    if (field.type === 'checkbox') {
+      return `<input type="checkbox" id="f_${field.name}" ${val ? 'checked' : ''} style="width:auto;" />`;
+    }
+    if (field.type === 'select') {
+      const opts = field.options
+        .map((o) => `<option value="${o}" ${o === val ? 'selected' : ''}>${o}</option>`)
+        .join('');
+      return `<select id="f_${field.name}">${opts}</select>`;
+    }
+    if (field.type === 'image') {
+      return `
+        <input type="file" id="f_${field.name}_file" accept="image/*" />
+        <input type="hidden" id="f_${field.name}" value="${val}" />
+        <div id="f_${field.name}_preview" style="margin-top:6px; font-size:0.8rem; color:var(--ikoct-text-muted);">${val ? 'Current: ' + val : ''}</div>
+      `;
+    }
+    return `<input type="${field.type}" id="f_${field.name}" value="${val}" ${field.required ? 'required' : ''} />`;
+  }
+
+  function openModal(item) {
+    editingId = item ? item.id : null;
+    document.getElementById('modalTitle').textContent = item ? `Edit ${config.label}` : `Add ${config.label}`;
+    document.getElementById('modalAlert').innerHTML = '';
+    const form = document.getElementById('itemForm');
+    form.innerHTML = config.fields
+      .map(
+        (f) => `<div class="form-group"><label>${f.label}</label>${fieldHtml(f, item ? item[f.name] : undefined)}</div>`
+      )
+      .join('');
+
+    // Wire up image upload fields
+    config.fields
+      .filter((f) => f.type === 'image')
+      .forEach((f) => {
+        const fileInput = document.getElementById(`f_${f.name}_file`);
+        fileInput.addEventListener('change', async () => {
+          const file = fileInput.files[0];
+          if (!file) return;
+          const preview = document.getElementById(`f_${f.name}_preview`);
+          preview.textContent = 'Uploading…';
+          try {
+            const { data } = await IkoctAPI.uploadImage(file);
+            document.getElementById(`f_${f.name}`).value = data.path;
+            preview.textContent = `Uploaded: ${data.path}`;
+          } catch (err) {
+            preview.textContent = `Upload failed: ${err.message}`;
+          }
+        });
+      });
+
+    document.getElementById('modalBackdrop').classList.remove('hidden');
+  }
+
+  function closeModal() {
+    document.getElementById('modalBackdrop').classList.add('hidden');
+    editingId = null;
+  }
+
+  document.getElementById('addBtn').addEventListener('click', () => openModal(null));
+  document.getElementById('cancelBtn').addEventListener('click', closeModal);
+
+  document.getElementById('itemForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const payload = {};
+    config.fields.forEach((f) => {
+      const el = document.getElementById(`f_${f.name}`);
+      if (f.type === 'checkbox') payload[f.name] = el.checked;
+      else if (f.type === 'number') payload[f.name] = el.value ? Number(el.value) : null;
+      else payload[f.name] = el.value || null;
+    });
+
+    const saveBtn = document.getElementById('saveBtn');
+    saveBtn.disabled = true;
+    saveBtn.textContent = 'Saving…';
+    try {
+      if (editingId) {
+        await IkoctAPI.update(resource, editingId, payload);
+      } else {
+        await IkoctAPI.create(resource, payload);
+      }
+      closeModal();
+      showAlert('Saved successfully.', 'success');
+      loadTable();
+    } catch (err) {
+      document.getElementById('modalAlert').innerHTML = `<div class="alert alert-error">${err.message}</div>`;
+    } finally {
+      saveBtn.disabled = false;
+      saveBtn.textContent = 'Save';
+    }
+  });
+
+  async function deleteItem(id) {
+    if (!confirm('Delete this item? This cannot be undone.')) return;
+    try {
+      await IkoctAPI.remove(resource, id);
+      showAlert('Deleted.', 'success');
+      loadTable();
+    } catch (err) {
+      showAlert(err.message, 'error');
+    }
+  }
+
+  loadTable();
+  if (params.get('new') === '1') openModal(null);
+</script>
+</body>
+</html>
